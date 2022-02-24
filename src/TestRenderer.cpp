@@ -1,43 +1,31 @@
 
 
+#include "Engine/Window.hpp"
+
 #include <iostream>
 
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 
 
 
 
+using namespace pecs;
 
 int main()
 {
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-//    glfwWindowHint(GLFW_SAMPLES, 4);
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
+    Window::InitGLFW(800, 600);
+    Window::InitGlad();
 
 
-    int width = 800;
-    int height = 600;
-
-
-    GLFWwindow* window = glfwCreateWindow(width, height, "LearnOpenGL", NULL, NULL);
-    if(window == NULL)
+    while(!glfwWindowShouldClose(Window::window))
     {
-        std::cout << "Failed to create glfw window\n";
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
+        glClearColor(.8f, 0.f, 6.f, 1.f);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-    float time = 0.f;
-    while(time < 50000.f)
-    {
-        time += .1f;
+        glfwSwapBuffers(Window::window);
+        glfwPollEvents();
     }
 
     glfwTerminate();

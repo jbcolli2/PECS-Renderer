@@ -25,5 +25,5 @@ include_directories(${GLM_INCLUDE_DIR} ${GLFW3_INCLUDE_DIR} ${ASSIMP_INCLUDE_DIR
 add_library(GLAD include/glad/glad.c)
 set(LIBS ${LIBS} GLAD)
 
-add_executable(PECS_Renderer src/TestRenderer.cpp)
+add_executable(PECS_Renderer src/TestRenderer.cpp src/Engine/Window.hpp)
 target_link_libraries(PECS_Renderer ${LIBS})
