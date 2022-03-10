@@ -17,8 +17,9 @@ namespace Window
 {
 
 static GLFWwindow* window;
+static float aspectRatio = 4.f/3.f;
 
-int InitGLFW(int width, int height)
+static int InitGLFW(int width, int height)
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -33,21 +34,26 @@ int InitGLFW(int width, int height)
     window = glfwCreateWindow(width, height, "LearnOpenGL", NULL, NULL);
     if(window == NULL)
     {
+        aspectRatio = 0.f;
         std::cout << "Failed to create glfw window\n";
         glfwTerminate();
         return -1;
     }
+    aspectRatio = static_cast<float>(width)/static_cast<float>(height);
     glfwMakeContextCurrent(window);
+    return 0;
 }
 
 
-int InitGlad()
+static int InitGlad()
 {
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
+
+    return 0;
 }
 
 
