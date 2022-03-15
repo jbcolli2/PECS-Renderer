@@ -6,10 +6,10 @@
 #define PECS_RENDERER_SYSTEM_HPP
 
 #include "Util.hpp"
-#include "Components/ComponentManager.hpp"
 #include "Objects/Object.hpp"
+#include "Components/ComponentManager.hpp"
 
-#include <set>
+
 
 
 
@@ -41,6 +41,7 @@ public:
      * @returns Return true if object was added, false if not
     ***************************************///
     bool AddObjSameSignature(Object &object);
+    bool AddObjSameSignature(Object* object);
 };
 
 
@@ -54,7 +55,7 @@ public:
 template <typename CompT>
 void System::SetSignature()
 {
-    m_signature.set(ComponentManager::RegisterComponent<CompT>());
+    m_signature |= ComponentManager::GetSignature<CompT>();
 }
 
 

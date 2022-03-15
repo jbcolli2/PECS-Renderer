@@ -7,5 +7,12 @@
 
 using namespace pecs;
 
-std::vector<const char*> ComponentManager::m_componentList{};
+std::unordered_map<const char*, Signature> ComponentManager::m_componentList{};
+int ComponentManager::numComponents = 0;
+
+
+
+
+
+
 

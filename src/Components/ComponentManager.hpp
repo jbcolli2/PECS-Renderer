@@ -7,32 +7,26 @@
 
 #include "Util.hpp"
 
+#include <unordered_map>
+
 
 namespace pecs {
 class ComponentManager {
 private:
     // hash table to store each component type name with its integer identifier
-    static std::vector<const char *> m_componentList;
+    static std::unordered_map<const char*, Signature> m_componentList;
+    // Number of components registered
+    static int numComponents;
 
 public:
     ComponentManager() = default;
 
-    /***************** RegisterComponent  ******************
-     * @brief Static method that adds a component to the `m_componentList` hash table
-     *
-     * @param componentType The name of the component obtained from typeof(___).name()
+    /***************** GetSignature  ******************
+     * @brief Static method that returns the signature of the given component in template
+     *      parameter.
     ***************************************///
     template <typename CompT>
-    static int RegisterComponent();
-
-    /***************** GetComponentID  ******************
-     * @brief Returns the id of the component to be used in a signature.  Used especially
-     *      for adding to the signature of a system.
-    ***************************************///
-    template <typename CompT>
-    static int GetComponentID();
-
-
+    static Signature GetSignature();
 
 };  // End of ComponentManager class
 
@@ -41,33 +35,46 @@ public:
 
 
 
-template <typename CompT>
-int ComponentManager::RegisterComponent()
-{
-    int index = FindIndex(m_componentList, typeid(CompT).name());
-    if(index >= 0)
-    {
-        return index;
-    }
-    // else
-
-    m_componentList.push_back(typeid(CompT).name());
-
-    return m_componentList.size() - 1;
-}
 
 
 
-
-/***************** GetComponentID  ******************
- * @brief Returns the id of the component to be used in a signature.  Used especially
- *      for adding to the signature of a system.
+/***************** GetSignature  ******************
+ * @brief Static method that returns the signature of the given component in template
+ *      parameter.
 ***************************************///
 template <typename CompT>
-int ComponentManager::GetComponentID()
+Signature ComponentManager::GetSignature()
 {
-    return FindIndex(m_componentList, typeid(CompT).name());
+    try
+    {
+        auto compSig = m_componentList.at(typeid(CompT).name());
+        return compSig;
+    }
+    catch(const std::out_of_range& e)
+    {
+        ComponentManager::numComponents++;
+        Signature newCompSig;
+        newCompSig.set(numComponents);
+        m_componentList.insert({typeid(CompT).name(), newCompSig});
+
+        return newCompSig;
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 } // end of pecs namespace

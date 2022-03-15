@@ -22,5 +22,18 @@ public:
 };
 
 
+
+
+
+
+
+/***************** Pipeline Component  ******************
+ * @brief Dummy component to let RenderPipeline know that the object should be sent to the
+ *      Pipeline system.
+******************************************************************/
+struct Pipeline : public Component
+{
+    Pipeline() = default;
+};
 } // End namespace pecs
 #endif //PECS_RENDERER_COMPONENT_HPP

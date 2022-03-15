@@ -12,8 +12,13 @@ int main()
 {
     std::set<std::bitset<8>> s{};
 
-    std::bitset<8> bits{0b0000100};
-    s.insert(bits);
+    std::bitset<8> bits{0b00001000};
+    std::bitset<8> b2{0b00000110};
 
-//    std::cout << *s.begin() << std::endl;
+    b2 |= bits;
+
+    std::cout << b2 << std::endl;
+
+    return 0;
+
 }

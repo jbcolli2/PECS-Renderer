@@ -5,7 +5,7 @@
 #ifndef PECS_RENDERER_RENDERABLE_HPP
 #define PECS_RENDERER_RENDERABLE_HPP
 
-#include "Component.hpp"
+#include "Components/Component.hpp"
 #include "RenderUtil.hpp"
 
 #include <glm/glm.hpp>

@@ -14,11 +14,17 @@ using namespace pecs;
 ***************************************///
 bool System::AddObjSameSignature(Object &object)
 {
-    if(m_signature == object.GetSignature())
+    if(HasSignature(object, m_signature))
     {
         m_objects.push_back(&object);
         return true;
     }
 
     return false;
+}
+
+
+bool System::AddObjSameSignature(Object* object)
+{
+    return AddObjSameSignature(*object);
 }

@@ -25,7 +25,7 @@ include_directories(${GLM_INCLUDE_DIR} ${GLFW3_INCLUDE_DIR} ${ASSIMP_INCLUDE_DIR
 add_library(GLAD include/glad/glad.c)
 set(LIBS ${LIBS} GLAD)
 
-add_executable(PECS_Renderer src/TestRenderer.cpp src/Objects/Object.cpp src/Components/Component.cpp src/Components/ComponentManager.cpp src/Components/ComponentManager.hpp src/Util.hpp src/Components/Renderable.hpp src/Systems/System.cpp src/Systems/System.hpp src/Systems/RenderPipeline.cpp src/Systems/RenderPipeline.hpp src/RenderUtil.hpp src/Engine/Shader.cpp src/Util.cpp src/RenderUtil.cpp)
+add_executable(PECS_Renderer src/TestRenderer.cpp src/Objects/Object.cpp src/Components/Component.cpp src/Components/ComponentManager.cpp src/Systems/System.cpp src/Systems/RenderPipeline.cpp src/RenderUtil.hpp src/Engine/Shader.cpp src/Util.cpp src/RenderUtil.cpp src/Components/Light.cpp src/Engine/Input.cpp src/Engine/Input.hpp)
 target_link_libraries(PECS_Renderer ${LIBS})
 
 add_executable(Playground Playground/main.cpp)

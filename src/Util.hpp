@@ -23,6 +23,11 @@ using Signature = std::bitset<MAX_COMPONENTS>;
 
 
 
+
+
+
+
+
 /***************** FindIndex  ******************
  * @brief Returns the index of an element found in a vector.  If element is
  *      not found in the vector, returns -1.  If the element is in the vector
