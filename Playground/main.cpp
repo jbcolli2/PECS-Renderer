@@ -8,16 +8,25 @@
 #include <set>
 #include <bitset>
 
+class A
+{
+private:
+    int val;
+
+public:
+    A(int val) : val(val) {};
+    friend int getVal(const A& a);
+};
+
+int getVal(const A& a) { return a.val;};
+
+
+
 int main()
 {
-    std::set<std::bitset<8>> s{};
 
-    std::bitset<8> bits{0b00001000};
-    std::bitset<8> b2{0b00000110};
-
-    b2 |= bits;
-
-    std::cout << b2 << std::endl;
+    A a{5};
+    std::cout << getVal(a) << std::endl;
 
     return 0;
 

@@ -13,6 +13,7 @@
 
 
 #include "Systems/RenderPipeline.hpp"
+#include "Systems/CameraController.hpp"
 
 
 
@@ -29,8 +30,15 @@ using namespace pecs;
 
 int main()
 {
-    Window::InitGLFW(800, 600);
-    Window::InitGlad();
+    WindowManager::GetInstance().InitGLFW(800, 600);
+    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
+
+
+    GLFWwindow* window = WindowManager::GetInstance().GetWindow();
 
 
     std::vector<Object> objectList{};
@@ -47,28 +55,53 @@ int main()
     objectList.emplace_back(Object());
     objectList.back().AddComponent(Light());
     objectList.back().AddComponent(DirLight());
-    objectList.back().AddComponent(Renderable());
     objectList.back().GetComponent<DirLight>()->direction.z = 1.f;
     objectList.back().GetComponent<Light>()->diffuse.r = .4f;
+
+    // Camera
+    objectList.emplace_back(Object());
+    objectList.back().AddComponent(Camera());
+    objectList.back().GetComponent<Camera>()->position = glm::vec3(-2.f, 0.f, 5.f);
+
 
     // ******** Systems  ********** //
     RenderPipeline renderPipeline{};
     renderPipeline.SetSignature<Pipeline>();
 
+    CameraController cameraController{};
+
     for(auto& obj : objectList)
     {
         renderPipeline.AddObjSameSignature(obj);
+        cameraController.AddObjSameSignature(obj);
     }
 
     renderPipeline.SetupPipeline();
     renderPipeline.SetupShape();
+    cameraController.Setup();
 
-    while(!glfwWindowShouldClose(Window::window))
+    float currentFrame = 0.f;
+    float lastFrame = 0.f;
+    float deltaTime = 0.f;
+
+    while(!glfwWindowShouldClose(window))
     {
+        currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+        glfwPollEvents();
+        Input::GetInstance().HandleNewInputs();
+
+        if(Input::GetInstance().KeyDown(GLFW_KEY_P))
+            glfwSetWindowShouldClose(window, true);
+
+        cameraController.Update(deltaTime);
+
+
         renderPipeline.Render();
 
-        glfwSwapBuffers(Window::window);
-        glfwPollEvents();
+        glfwSwapBuffers(window);
+
     }
 
     glfwTerminate();

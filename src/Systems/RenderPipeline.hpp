@@ -39,6 +39,10 @@ private:
     Shader m_solidShader{};
     Shader m_lightShader{};
 
+    // ************* Fulstrum variables  **************************** //
+    float m_nearField{.1f};
+    float m_farField{100.f};
+
     // ************* UBO  **************************** //
     unsigned int m_uboVP;
     glm::mat4 m_view{1.f}, m_proj{1.f};

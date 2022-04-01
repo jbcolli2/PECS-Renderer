@@ -68,10 +68,10 @@ void RenderPipeline::SetupShape()
 
     for(auto obj : m_objects)
     {
-        shape = obj->GetComponent<Renderable>();
-        if(shape == nullptr)
+        if(!HasComponent<Renderable>(obj))
             continue;
-        // if obj has Renderable component
+
+        shape = obj->GetComponent<Renderable>();
         genVertexData(shape);
     }
 }
@@ -126,9 +126,12 @@ void RenderPipeline::Render()
     glClearColor(0.1f, 0.1f, 0.1f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // TODO: View and Projection matrices are being hardcoded right now.
-    m_view = glm::lookAt(glm::vec3(-2.f, 1.5f, 5.f), glm::vec3(0.f), glm::vec3(0.f, 1.f, 0.f));
-    m_proj = glm::perspective(glm::radians(45.f), Window::aspectRatio, .1f, 100.f);
+    // TODO: Assumes first camera is main camera.  Find a way to determine main camera without searching
+    //    through entire vector.  Maybe just pass in view matrix rather than Camera object?
+    auto mainCam = m_cameras[0]->GetComponent<Camera>();
+    m_view = mainCam->view;
+//    m_view = glm::lookAt(glm::vec3(-2.f, 0.f, 5.f), glm::vec3(0.f), glm::vec3(0.f, 1.f, 0.f));
+    m_proj = glm::perspective(glm::radians(45.f), WindowManager::GetInstance().GetAspectRatio(), m_nearField, m_farField);
 
     // Fill UBO with view and proj matrices
     glBindBuffer(GL_UNIFORM_BUFFER, m_uboVP);
